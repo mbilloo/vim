@@ -1,0 +1,6 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =4
+let g:netrw_dirhist_1='/home/mbilloo/projects/cassowary_enhancements/dmr_work/nbfm_init/sysman_stacy/dsp/c6accel_1_01_00_07/dsp/alg/src'
+let g:netrw_dirhist_2='/home/mbilloo/projects/kf4/torpedo_clean/linux/kernel/torpedo-3.0'
+let g:netrw_dirhist_3='/home/mbilloo/projects/kf4/sysman_mainbranch/apploader.pj/int_messages.ss'
+let g:netrw_dirhist_4='/home/mbilloo/projects/kf4/sysman_mainbranch/specs/apploader/KF4_CG'
