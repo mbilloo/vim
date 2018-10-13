@@ -13,30 +13,31 @@ call vundle#begin()
 
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
-
-" The following are examples of different formats supported.
-" Keep Plugin commands between vundle#begin/end.
-" plugin on GitHub repo
 Plugin 'tpope/vim-fugitive'
-" plugin from http://vim-scripts.org/vim/scripts.html
-" Plugin 'L9'
-" Git plugin not hosted on GitHub
 Plugin 'git://git.wincent.com/command-t.git'
-" git repos on your local machine (i.e. when working on your own plugin)
-"  Plugin 'file:///home/gmarik/path/to/plugin'
-" The sparkup vim script is in a subdirectory of this repo called vim.
-" Pass the path to set the runtimepath properly.
-Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
-" Install L9 and avoid a Naming conflict if you've already installed a
-" different version somewhere else.
-Plugin 'ascenator/L9', {'name': 'newL9'}
-" YouCompleteMe plugin
-Plugin 'Valloric/YouCompleteMe'
-Plugin 'rdnetto/YCM-Generator'
+"
+Plugin 'LucHermitte/lh-vim-lib'
+Plugin 'LucHermitte/lh-tags'
+Plugin 'LucHermitte/lh-dev'
+"Plugin 'LucHermitte/lh-brackets'
+Plugin 'LucHermitte/searchInRuntime'
+Plugin 'LucHermitte/mu-template'
+Plugin 'tomtom/stakeholders_vim'
+Plugin 'LucHermitte/alternate-lite'
+Plugin 'LucHermitte/lh-cpp'
+"
+Plugin 'jeaye/color_coded'
+Plugin 'prabirshrestha/async.vim'
+Plugin 'prabirshrestha/vim-lsp'
+Plugin 'git://github.com/pangloss/vim-javascript.git'
+Plugin 'auto-pairs-gentle'
+
+"
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
-filetype plugin indent on    " required
+
+filetype plugin indent off    " required
 syntax on
 " To ignore plugin indent changes, instead use:
 "filetype plugin on
@@ -60,10 +61,10 @@ set ttyfast                     " faster redraw
 set backspace=indent,eol,start
 " }}}
 " Spaces & Tabs {{{
-set tabstop=4           " 4 space tab
+"set tabstop=4           " 4 space tab
 set expandtab           " use spaces for tabs
-set softtabstop=4       " 4 space tab
-set shiftwidth=4
+"set softtabstop=4       " 4 space tab
+"set shiftwidth=4
 set modelines=1
 filetype indent on
 filetype plugin on
@@ -134,6 +135,13 @@ match ExtraWhitespace /\s\+$/
 " MacVim {{{
 set guioptions-=r 
 set guioptions-=L
+autocmd Filetype javascript setlocal shiftwidth=2 tabstop=2
+autocmd Filetype html       setlocal shiftwidth=2 tabstop=2
+autocmd Filetype cpp        setlocal shiftwidth=4 tabstop=4
+autocmd Filetype py         setlocal shiftwidth=4 tabstop=4
+autocmd Filetype c          setlocal shiftwidth=4 tabstop=4
+autocmd Filetype java       setlocal shiftwidth=4 tabstop=4
+
 " }}}
 " AutoGroups {{{
 augroup configgroup
@@ -213,7 +221,7 @@ function! <SID>CleanFile()
 endfunction
  
 function! s:NextTextObject(motion, dir)
-  let c = nr2char(getchar())
+  "let c = nr2char(getchar())
  
   if c ==# "b"
       let c = "("
@@ -221,13 +229,19 @@ function! s:NextTextObject(motion, dir)
       let c = "{"
   elseif c ==# "r"
       let c = "["
-  endif
+ " endif
  
   exe "normal! ".a:dir.c."v".a:motion.c
 endfunction
+if executable('cquery')
+       au User lsp_setup call lsp#register_server({
+             \ 'name': 'cquery',
+             \ 'cmd': {server_info->['cquery']},
+             \ 'root_uri': {server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'compile_commands.json'))},
+             \ 'initialization_options': { 'cacheDirectory': '/tmp/cquery/cache' },
+             \ 'whitelist': ['c', 'cpp', 'objc', 'objcpp', 'cc'],
+             \ })
+endif
 " }}}
 
-" YCM config options {{{
-let g:ycm_extra_conf_globlist = ['/home/mbilloo/.ycm_extra_conf.py']
-"}}}
-" vim:foldmethod=marker:foldlevel=0
+
